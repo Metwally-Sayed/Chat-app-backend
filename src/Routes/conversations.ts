@@ -4,9 +4,11 @@ import { Message } from "../Entities/message";
 import { User } from "../Entities/user";
 import { Conversation } from "../Entities/conversation"
 import { Chat } from "../Entities/chat";
+import { findAncestor } from "typescript";
 
 
 const router = Router()
+
 
 
 // get all conversations
@@ -20,8 +22,6 @@ router.get("/", async (req, res) => {
     }
 })
 
-
-
 //Create a new conversation
 router.post('/', async (req, res) => {
     try {
@@ -29,8 +29,9 @@ router.post('/', async (req, res) => {
         const conversation = Conversation.create()
         await conversation.save()
 
-        let conversationId = conversation.id
+        const conversationId = conversation.id
         for (let i = 0; i < userIds.length; i++) {
+
             const chat = Chat.create({ conversationId, userId: userIds[i] })
             await chat.save()
             console.log(chat)
